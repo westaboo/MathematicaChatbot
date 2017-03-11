@@ -1,0 +1,45 @@
+humanFile := "human_msgs.txt"
+botFile := "bot_msgs.txt"
+ImportLines[f_] := StringSplit[Import[f, {"Text"}], "\n"]
+appendToFile[f_, s_] := Export[f, Join[ImportLines[f], {s}], "List"]
+addHumanMsg[inp_,res_] := appendToFile[humanFile, inp <> "\t" <> res]
+addBotMsg[inp_,res_] := appendToFile[botFile, inp <> "\t" <>res]
+combine[humanData_, botData_] := Join[#->"human"&/@ humanData,#->"bot"& /@botData]
+shuffle[list_] := RandomChoice[list, Length[list]]
+
+humanData = shuffle[ImportLines[humanFile]]
+botData = shuffle[ImportLines[botFile]]
+trainingSet := combine[humanData, botData]
+classifier := Classify[trainingSet]  (* This will classify whether or not a dialogue pair is valid ("human" interaction) or not ("bot" interaction) *)
+
+humanData = shuffle[ImportLines[humanFile]]
+botData = shuffle[ImportLines[botFile]]
+trainingSet := combine[humanData, botData]
+classifier := Classify[trainingSet]  (* This will classify whether or not a dialogue pair is valid ("human" interaction) or not ("bot" interaction) *)
+
+wordTypes := POS/@Flatten[humanWords]
+(* Frequencies of words *)
+wordFreq1 := Frequencies[wordTypes] // N
+(* Frequencies of consecutive types of words *)
+wordFreq2 := Frequencies[Partition[wordTypes, 3, 1]] // N
+
+condprobs := (Join @(Frequencies[Cases[Partition[wordTypes, 3, 1], {#, _}]]&/@ partsOfSpeech))  //Flatten
+
+tm := Replace[Outer[List, partsOfSpeech, partsOfSpeech]  /. condprobs,{_,__} -> 0, {3}] // N
+
+gram4data :=Flatten[Frequencies /@
+GatherBy[Partition[humanWords, 4, 1], Most]] // N
+
+gram4gr:= Graph [gram4data /.{HoldPattern[{w1_, w2_, w3_, w4_} -> p_] :>Property[{w1, w2, w3} <-> {w2, w3, w4},
+"Probability"-> p]}, PerformanceGoal -> "Speed"]
+
+initialProbabilityVector :=SparseArray[VertexList[gram4gr] /.Frequencies[Partition[humanWords,3,1]]]
+transitionMatrix := WeightedAdjacencyMatrix[gram4gr, EdgeWeight->"Probability"]
+mc := DiscreteMarkovProcess[initialProbabilityVector // N, transitionMatrix]
+GramListToText[list_] := StringJoin[Riffle[Join[First[list],Rest[list][[All,-1]]], " "]]
+ls := Extract[VertexList[gram4gr],Transpose[RandomFunction[mc, {0, 100}]["States"]]]
+
+extractKey[x_ -> _] := x
+pairClassify[in_, res_] := {in, res} -> classifier[in <>"\t"<>res]
+chooseBestResponse[in_, list_] := Module[{c = (pairClassify[in, #])&/@list}, extractKey[First[c]][[2]]]
+respondTo[input_] := Module[{s = (chooseBestResponse[input,StringSplit[#,"\t"]]&)@GramListToText[ls]},s]

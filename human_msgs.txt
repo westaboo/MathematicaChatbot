@@ -1,0 +1,43 @@
+Hey	Hi
+Hi	How's it going?
+How's it going?	Pretty well, you?
+Pretty well, you?	Same, same.
+How's your hack coming?	Eh. Could be better.
+Eh. Could be better.	Oh? Why's that?
+Oh? Why's that?	Just problems with APIs and stuff.
+Just problems with APIs and stuff.	What're you using?
+What're you using?	Google Cloud Platform
+What're you using?	Wolfram's thing
+What're you using?	Twilio >.>
+Google Cloud Platform	Ahh how's that going?
+Google Cloud Platform	Oh me too!
+Wolfram's thing	How's that going?
+Wolfram's thing	Ah interesting
+Ahh how's that going?	Alright I guess
+Ah interesting	You?
+Oh me too!	Really? How's that going?
+Really? How's that going?	Alright I guess
+Alright I guess	Same here sigh. I'm tired.
+You?	The project's coming along, I guess
+How's that going?	Pretty well!
+Pretty well!	I wish I could say the same
+I wish	Oh?
+Oh?	Mhm.
+Well alright	Sorry if I'm not making sense lol, I'm tired.
+Sorry	No prob haha
+No prob haha	Did you sleep last night?
+Did you sleep last night?	Nah, been hacking
+Nah, been hacking	Damn, dedication xD
+Damn, dedication xD	dedication is my middle name
+Damn, dedication xD	Sometimes lul
+I'm so glad they have boba here	 I know boba is great
+I'm so glad they have boba here	 I'm not a fan of boba personally
+dedication is my middle name	In that case goodbye!
+Sometimes lul	lul
+I know boba is great	I have yet to meet someone who didn't like boba
+I'm not a fan of boba personally	 Well this conversation is over
+Goodbye	Goodbye
+Hello	Greetings
+How goes it?	Well hbu?
+Well hbu?	same
+same	same
